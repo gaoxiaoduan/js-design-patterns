@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <button id="execute">执行execute</button>
+    <button id="undo">执行undo</button>
+    <script>
+      // 命令模式
+      // 命令模式的意图是把请求封装为对象，从而分离请求的发起者和请求的接收者（执行者）之间的耦合关系。
+      // 在命令被执行之前，可以预先往命令对象中植入命令的接收者。
+
+      // 发起者
+      var TV = {
+        open() {
+          console.log("打开电视");
+        },
+        close() {
+          console.log("关闭电视");
+        },
+      };
+
+      // 执行者
+      var createCommand = function (receiver) {
+        return {
+          execute() {
+            receiver.open();
+          },
+          undo() {
+            receiver.close();
+          },
+        };
+      };
+
+      var setCommand = function (command) {
+        document.getElementById("execute").onclick = function () {
+          command.execute();
+        };
+        document.getElementById("undo").onclick = function () {
+          command.undo();
+        };
+      };
+
+      setCommand(createCommand(TV));
+    </script>
+  </body>
+</html>

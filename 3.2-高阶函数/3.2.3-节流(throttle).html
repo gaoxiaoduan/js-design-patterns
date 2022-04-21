@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <input type="text" id="ipt"> </input>
+    </div>
+    <script>
+        let throttle = function (fn, interval) {
+            let timer = null;
+            let self = this;
+            let fistTime = true;
+            return function () {
+                let args = arguments;
+                if(fistTime){ // 第一次触发不需要延迟执行
+                    fn.apply(self,args);
+                    fistTime = false;
+                    return;
+                }
+                if (timer) {
+                    return false;
+                }
+
+                timer = setTimeout(function () {
+                    clearTimeout(timer);
+                    timer = null;
+                    fn.apply(self, args);
+                }, interval || 500);
+
+            };
+        };
+
+        var iptDom = document.querySelector('#ipt');
+
+        iptDom.oninput = throttle(function (e) {
+            console.log(e.target.value);
+        }, 1000);
+
+        window.onresize = throttle(function () {
+            console.log(1);
+        });
+    </script>
+</body>
+
+</html>
